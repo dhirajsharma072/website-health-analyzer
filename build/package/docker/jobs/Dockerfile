@@ -14,9 +14,9 @@ COPY $WORKDIR/jobs/cronjobs /etc/crontabs/root
 
 RUN git config --global url."git://".insteadOf https://
 
-RUN go build ./jobs/jobs.go
+RUN go build ./jobs/probs.go
 
-RUN chmod +x ./jobs
+RUN chmod +x ./probs
 
 # start crond with log level 8 in foreground, output to stderr
 CMD ["crond", "-f", "-d", "8"]

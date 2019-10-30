@@ -8,14 +8,13 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"sync"
 	"time"
-
-	"github.com/dhirajsharma072/website-health-analyzer/jobs/waitgroup"
 )
 
 type site struct {
 	URL  string `json:"url"`
-	UUID string `json:"uuid"`
+	UUID string `json:"id"`
 }
 
 // Concurrent requests
@@ -106,16 +105,18 @@ func main() {
 		panic("BASE_URL env var not configured properly")
 	}
 
+	// gocron.Every(1).Second().Do(taskWithParams, 1, "hello")
+
 	siteMap, err := FetchAllSites()
 	if err != nil {
 		log.Fatal("Fetching all the sites failed", err)
 		return
 	}
 
-	wg := waitgroup.NewWaitGroup(workersCount)
+	var wg sync.WaitGroup
 
 	for _, s := range siteMap {
-		wg.BlockAdd()
+		wg.Add(1)
 		println("Adding wait group")
 		go func(s map[string]string) {
 			println("Calling URL worker")
