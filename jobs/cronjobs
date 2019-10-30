@@ -1,0 +1,1 @@
+*/5 * * * *  /go/src/wesite-health-analyzer/prober >> /log_file 2>&1

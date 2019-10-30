@@ -51,3 +51,8 @@ func (m *WebsiteDAO) Update(website Website) error {
 	err := db.C(COLLECTION).UpdateId(website.ID, &website)
 	return err
 }
+
+func (m *WebsiteDAO) Patch(match map[string]interface{}, update map[string]interface{}) error {
+	err := db.C(COLLECTION).Update(match, update)
+	return err
+}

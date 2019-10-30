@@ -9,6 +9,7 @@ import (
 	. "github.com/dhirajsharma072/website-health-analyzer/src/models"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var dao = WebsiteDAO{}
@@ -44,12 +45,31 @@ func CreateWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
 // PUT update an existing website
 func UpdateWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
+	vars := mux.Vars(r)
 	var website Website
+	website.ID = vars["id"]
 	if err := json.NewDecoder(r.Body).Decode(&website); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 	if err := dao.Update(website); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respondWithJson(w, http.StatusOK, map[string]string{"result": "success"})
+}
+func PatchWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+	vars := mux.Vars(r)
+	var wp WebsitePatch
+	var id = vars["id"]
+	wp.UpdatedAt = time.Now()
+
+	if err := json.NewDecoder(r.Body).Decode(&wp); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	if err := dao.Patch(bson.M{"uuid": id}, bson.M{"$set": &wp}); err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
