@@ -7,6 +7,7 @@ import (
 
 	. "github.com/dhirajsharma072/website-health-analyzer/src/dao"
 	. "github.com/dhirajsharma072/website-health-analyzer/src/models"
+	. "github.com/dhirajsharma072/website-health-analyzer/src/validators"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
@@ -15,7 +16,7 @@ import (
 var dao = WebsiteDAO{}
 
 // GET list of websites
-func AllWebsitesEndPoint(w http.ResponseWriter, r *http.Request) {
+func AllWebsites(w http.ResponseWriter, r *http.Request) {
 	websites, err := dao.FindAll()
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
@@ -25,7 +26,7 @@ func AllWebsitesEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST a new website
-func CreateWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
+func CreateWebsite(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	var website Website
 	website.ID = uuid.New().String()
@@ -43,7 +44,7 @@ func CreateWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 // PUT update an existing website
-func UpdateWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
+func UpdateWebsite(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	vars := mux.Vars(r)
 	var website Website
@@ -52,13 +53,17 @@ func UpdateWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
+	if IsValidRequestURL(website.URL) == false {
+		respondWithJson(w, http.StatusBadRequest, map[string]string{"result": "Invalid URL"})
+		return
+	}
 	if err := dao.Update(website); err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 	respondWithJson(w, http.StatusOK, map[string]string{"result": "success"})
 }
-func PatchWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
+func PatchWebsite(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	vars := mux.Vars(r)
 	var wp WebsitePatch
@@ -77,7 +82,7 @@ func PatchWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 // DELETE an existing website
-func DeleteWebsiteEndPoint(w http.ResponseWriter, r *http.Request) {
+func DeleteWebsite(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	var website Website
 	vars := mux.Vars(r)

@@ -21,11 +21,11 @@ func init() {
 // Define HTTP request routes
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/websites", controller.AllWebsitesEndPoint).Methods("GET")
-	r.HandleFunc("/websites", controller.CreateWebsiteEndPoint).Methods("POST")
-	r.HandleFunc("/websites", controller.UpdateWebsiteEndPoint).Methods("PUT")
-	r.HandleFunc("/websites/{id}", controller.DeleteWebsiteEndPoint).Methods("DELETE")
-	r.HandleFunc("/websites/{id}", controller.PatchWebsiteEndPoint).Methods("PATCH")
+	r.HandleFunc("/websites", controller.AllWebsites).Methods("GET")
+	r.HandleFunc("/websites", controller.CreateWebsite).Methods("POST")
+	r.HandleFunc("/websites", controller.UpdateWebsite).Methods("PUT")
+	r.HandleFunc("/websites/{id}", controller.DeleteWebsite).Methods("DELETE")
+	r.HandleFunc("/websites/{id}", controller.PatchWebsite).Methods("PATCH")
 	if err := http.ListenAndServe(":3000", r); err != nil {
 		log.Fatal(err)
 	}
