@@ -11,7 +11,7 @@ services:
     depends_on:
       - mongo
     environment:
-      MONGO_URL: "mongodb://mongo:27017/website-analyzer"
+      - MONGO_HOSTNAME=mongo
     ports:
       - "9000:9000"
     hostname: web
@@ -31,4 +31,4 @@ services:
     depends_on:
       - web
     environment:
-      BASE_URL: "http://web:9000/websites/"
+      - BASE_URL="http://web:9000/websites/"

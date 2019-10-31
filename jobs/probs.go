@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"sync"
 	"time"
@@ -22,8 +23,7 @@ const workersCount = 10
 
 var healthCheckTimeout = 800 * time.Millisecond
 
-//var baseURL = os.Getenv("BASE_URL")|| " "
-var baseURL = "http://localhost:3000/websites/"
+var baseURL = os.Getenv("BASE_URL")
 
 func getURLWorker(s map[string]string) {
 	println("\n", s["url"])

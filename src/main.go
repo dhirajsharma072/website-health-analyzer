@@ -15,7 +15,7 @@ var defaultPort = "9000"
 
 // Parse the configuration file 'config.toml', and establish a connection to DB
 func init() {
-	dao.HostName = "localhost"
+	dao.HostName = os.Getenv("MONGO_HOSTNAME")
 	dao.DatabaseName = "website-analyzer"
 	dao.Connect()
 }
@@ -27,6 +27,8 @@ func main() {
 		port = defaultPort
 	}
 	r := mux.NewRouter()
+	var staticDir = "/web/"
+	r.PathPrefix(staticDir).Handler(http.StripPrefix(staticDir, http.FileServer(http.Dir("."+staticDir))))
 	r.HandleFunc("/websites", controller.AllWebsites).Methods("GET")
 	r.HandleFunc("/websites", controller.CreateWebsite).Methods("POST")
 	r.HandleFunc("/websites", controller.UpdateWebsite).Methods("PUT")
