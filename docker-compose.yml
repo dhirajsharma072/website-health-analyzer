@@ -31,4 +31,4 @@ services:
     depends_on:
       - web
     environment:
-      - BASE_URL="http://web:9000/websites/"
+      - BASE_URL="http://web:9000/websites"

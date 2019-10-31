@@ -57,9 +57,7 @@ func getStatus(resp *http.Response) bool {
 }
 
 func updateSite(status bool, s map[string]string) {
-
-	url := baseURL + s["uuid"]
-
+	url := baseURL + "/" + s["id"]
 	var jsonStr = []byte(`{"isHealthy": ` + strconv.FormatBool(status) + `}`)
 	fmt.Printf(s["uuid"], ` :  {"isHealthy": `+strconv.FormatBool(status)+`}`)
 	req, _ := http.NewRequest("PATCH", url, bytes.NewBuffer(jsonStr))
@@ -69,7 +67,7 @@ func updateSite(status bool, s map[string]string) {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		fmt.Print("\nUpdate site failed", s["uuid"], err)
+		fmt.Print("\nUpdate site failed", s["id"], err)
 	} else {
 		print(resp.Status)
 	}

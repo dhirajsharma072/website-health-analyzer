@@ -69,8 +69,8 @@ function loadSites() {
     });
 }
 function removeSite(e) {
-  const uuid = e.target.attributes["data-uuid"].value;
-  fetch(baseURL + "/" + uuid, {
+  const id = e.target.attributes["data-id"].value;
+  fetch(baseURL + "/" + id, {
     method: "delete"
   })
     .then(function(response) {
@@ -82,13 +82,13 @@ function removeSite(e) {
     });
 }
 
-function renderUrlStatus(data) {
+function renderUrlStatus(data=[]) {
   var urlListItems = "";
   data.forEach(function(site) {
     var statusIcon = site.isHealthy ? "&#9989;" : "&#10060;";
     urlListItems +=
-      '<div class="container" data-uuid="' +
-      site.uuid +
+      '<div class="container" data-id="' +
+      site.id +
       '">' +
       '<div class="row">' +
       '<div class="col-md-6">' +
@@ -98,8 +98,8 @@ function renderUrlStatus(data) {
       statusIcon +
       "</div>" +
       '<div class="col-md-2">' +
-      '<a href="#" data-uuid=' +
-      site.uuid +
+      '<a href="#" data-id=' +
+      site.id +
       " onclick=removeSite(event)>Delete</a>" +
       "</div>" +
       "</div>" +

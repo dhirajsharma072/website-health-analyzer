@@ -4,7 +4,6 @@ import (
 	"log"
 
 	mgo "github.com/globalsign/mgo"
-	"github.com/globalsign/mgo/bson"
 
 	. "github.com/dhirajsharma072/website-health-analyzer/src/models"
 )
@@ -30,7 +29,7 @@ func (m *WebsiteDAO) Connect() {
 // Find list of websites
 func (m *WebsiteDAO) FindAll() ([]Website, error) {
 	var websites []Website
-	err := db.C(COLLECTION).Find(bson.M{}).All(&websites)
+	err := db.C(COLLECTION).Find(nil).Sort("updatedAt").All(&websites)
 	return websites, err
 }
 
@@ -52,7 +51,11 @@ func (m *WebsiteDAO) Update(website Website) error {
 	return err
 }
 
-func (m *WebsiteDAO) Patch(match map[string]interface{}, update map[string]interface{}) error {
+func (m *WebsiteDAO) PatchSite(match map[string]interface{}, update map[string]interface{}) bool {
 	err := db.C(COLLECTION).Update(match, update)
-	return err
+	if err != nil {
+		log.Fatal(err)
+		return false
+	}
+	return true
 }
