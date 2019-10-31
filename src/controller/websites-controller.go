@@ -10,7 +10,7 @@ import (
 	. "github.com/dhirajsharma072/website-health-analyzer/src/validators"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2/bson"
+	"github.com/globalsign/mgo/bson"
 )
 
 var dao = WebsiteDAO{}

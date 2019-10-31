@@ -5,8 +5,8 @@ RUN apk --update add --no-cache git
 ENV GOPATH /go
 # Copy the local package files to the container's workspace.
 
-ADD . /go/src/wesite-health-analyzer
-WORKDIR /go/src/wesite-health-analyzer
+ADD . /go
+WORKDIR /go
 
 # copy crontabs for root user
 RUN echo "$WORKDIR"

@@ -4,8 +4,8 @@ RUN apk --update add --no-cache git
 
 ENV GOPATH /go
 # Copy the local package files to the container's workspace.
-ADD . /go/src/wesite-health-analyzer
-WORKDIR /go/src/wesite-health-analyzer
+ADD . /go
+WORKDIR /go
 
 RUN git config --global url."git://".insteadOf https://
 
@@ -14,8 +14,8 @@ RUN git config --global url."git://".insteadOf https://
 # either manually or with a tool like "godep".)
 RUN go get  github.com/gorilla/mux && \
   go get github.com/gorilla/handlers && \
-  go get gopkg.in/mgo.v2 && \
-  go get gopkg.in/mgo.v2/bson
+  go get github.com/globalsign/mgo && \
+  go get github.com/globalsign/mgo/bson
 
 RUN go build ./src/main.go
 
