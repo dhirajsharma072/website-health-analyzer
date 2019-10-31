@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -69,7 +68,7 @@ func UpdateWebsite(w http.ResponseWriter, r *http.Request) {
 }
 func PatchWebsite(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id := vars["id"] 
+	id := vars["id"]
 
 	var sp WebsitePatch
 	sp.UpdatedAt = time.Now()
