@@ -10,7 +10,7 @@ You can start the whole stack using docker-compose
 `docker-compose up`  
 This starts the web server, cron job to perform regular health checks and mongodb server
 
-After this head on to [web-analyzer](http://localhost:9000/websites)
+After this head on to [web-analyzer](http://localhost:9000/web/)
 
 ## Todo
 Increase unit test coverage for the app
